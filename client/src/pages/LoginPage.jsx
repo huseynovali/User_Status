@@ -2,7 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router";
 function LoginPage({ setUser }) {
+  const navigation = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -15,7 +17,9 @@ function LoginPage({ setUser }) {
     onSubmit: async (values) => {
       let data = await axios.post("http://localhost:3000/user/login", values);
 
-      setUser(data);
+      setUser(data.data);
+
+      navigation("/");
     },
   });
 
