@@ -14,14 +14,27 @@ const UserController = {
       });
       newUser
         .save()
-        .then(() => res.status(201).json(newUser))
+        .then(() => res.status(201).json(newUser._id))
         .catch((err) => res.status(400).json(err));
     } catch (error) {
       res.status(500).json(error);
     }
   },
 
-  login: async (req, res) => {},
+  login: async (req, res) => {
+    const { email } = req.body;
+    try {
+      const userCheck = await User.findOne({ email });
+      if (!userCheck) {
+        res.status(404).json("user not found !");
+      }
+      userCheck.status = true;
+      userCheck.save();
+      res.status(200).json(userCheck);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };
 
 module.exports = UserController;
