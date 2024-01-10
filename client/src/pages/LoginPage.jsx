@@ -19,7 +19,7 @@ function LoginPage({ setUser }) {
 
       setUser(data.data);
 
-      navigation("/");
+      navigation("/home");
     },
   });
 

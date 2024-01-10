@@ -14,9 +14,11 @@ function App() {
 
     return () => {};
   }, [user]);
+
   const Logout = () => {
     socketRef.emit("offline", user._id);
     setUser("");
+    window.location.reload();
   };
   return (
     <div>
