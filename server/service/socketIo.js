@@ -19,15 +19,23 @@ function initializeSocket(httpServer) {
         user.save();
       }
     });
+    socket.on("offline", async (userId) => {
+      let user = await User.findOne({ _id: userId });
+      if (user) {
+        user.socketId = "";
+        user.status = false;
+        user.save();
+      }
+    });
 
     socket.on("disconnect", async () => {
       console.log("user disconnect");
-      //   let user = await User.findOne({ SocketId: socket.id });
-      //   if (user) {
-      //     user.SocketId = "";
-      //     user.status = false;
-      //     user.save();
-      //   }
+      let user = await User.findOne({ socketId: socket.id });
+      if (user) {
+        user.socketId = "";
+        user.status = false;
+        user.save();
+      }
     });
   });
 }

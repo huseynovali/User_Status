@@ -8,22 +8,28 @@ import Home from "./pages/Home";
 function App() {
   const [user, setUser] = useState("");
   const navigation = useNavigate();
+  const socketRef = io("http://localhost:3000");
   useEffect(() => {
-    const socketRef = io("http://localhost:3000");
-
     socketRef.emit("newUser", user._id);
 
     return () => {};
   }, [user]);
-const Logout =()=>{
-  
-}
+  const Logout = () => {
+    socketRef.emit("offline", user._id);
+    setUser("");
+  };
   return (
     <div>
       <nav>
         <ul>
           {console.log(user)}
-          <li>{!user ? <Link to="/login">Login</Link>:<button onClick={()=>Logout()}>Logout</button>}</li>
+          <li>
+            {!user ? (
+              <Link to="/login">Login</Link>
+            ) : (
+              <button onClick={() => Logout()}>Logout</button>
+            )}
+          </li>
           <li>
             <li>{!user && <Link to="/register">Register</Link>}</li>
           </li>
